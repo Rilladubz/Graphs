@@ -88,7 +88,17 @@ class Graph:
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        my_stack = Stack()
+        visited = set()
+
+        if starting_vertex in visited:
+            return None
+
+        elif starting_vertex not in visited:
+            print(starting_vertex)
+            visited.add(starting_vertex)
+            for x in self.vertices[starting_vertex]:
+                my_stack.push(x)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -153,7 +163,7 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    print('added:', graph.vertices)
+    # print('added:', graph.vertices)
     '''
     Valid BFT paths:
         1, 2, 3, 4, 5, 6, 7
@@ -169,7 +179,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    # graph.bft(1)
     '''
     Valid DFT paths:
         1, 2, 3, 5, 4, 6, 7
@@ -178,7 +188,7 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     # graph.dft(1)
-    # graph.dft_recursive(1)
+    graph.dft_recursive(1)
     '''
     Valid BFS path:
         [1, 2, 4, 6]
