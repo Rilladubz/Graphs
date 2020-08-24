@@ -9,6 +9,8 @@ class Graph:
 
     def __init__(self):
         self.vertices = {}
+        self.my_stack = Stack()
+        self.visited = set()
 
     def add_vertex(self, vertex_id):
         """
@@ -88,17 +90,20 @@ class Graph:
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        my_stack = Stack()
-        visited = set()
+        if starting_vertex not in self.visited:
+            self.my_stack.push(starting_vertex)
 
-        if starting_vertex in visited:
+        current_vertex = self.my_stack.pop()
+
+        if current_vertex in self.visited:
             return None
 
-        elif starting_vertex not in visited:
-            print(starting_vertex)
-            visited.add(starting_vertex)
-            for x in self.vertices[starting_vertex]:
-                my_stack.push(x)
+        elif current_vertex not in self.visited:
+            print(current_vertex)
+            self.visited.add(current_vertex)
+            for x in self.vertices[current_vertex]:
+                self.my_stack.push(x)
+                self.dft_recursive(x)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -121,13 +126,50 @@ class Graph:
         # take current path
         # append the neighbor to it
         # queue up NEW path
+
+        my_queue = Queue()
+        path = []
+        path.append(starting_vertex)
+        my_queue.enqueue(path)
+        visited = list()
+        while my_queue.size() != 0:
+            current_vertex_path = my_queue.dequeue()
+            print('PATH:', current_vertex_path)
+            current_vertex = current_vertex_path[len(current_vertex_path) - 1]
+            if current_vertex not in visited:
+
+                if current_vertex == destination_vertex:
+                    return visited
+
+                visited.append(current_vertex)
+                for each in self.vertices[current_vertex]:
+                    current_vertex_path.append(each)
+                    my_queue.enqueue(current_vertex_path)
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        my_stack = Stack()
+        path = []
+        path.append(starting_vertex)
+        my_stack.push(path)
+        visited = list()
+        while my_stack.size() != 0:
+            current_vertex_path = my_stack.pop()
+            print('PATH:', current_vertex_path)
+            current_vertex = current_vertex_path[len(current_vertex_path) - 1]
+            if current_vertex not in visited:
+                visited.append(current_vertex)
+
+                if current_vertex == destination_vertex:
+                    return visited
+
+                for each in self.vertices[current_vertex]:
+                    current_vertex_path.append(each)
+                    my_stack.push(current_vertex_path)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
@@ -188,12 +230,12 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     # graph.dft(1)
-    graph.dft_recursive(1)
+    # graph.dft_recursive(1)
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
